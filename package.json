@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^26.6.3",
+    "@types/three": "^0.180.0",
+    "jsdom": "^30.1.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vite": "^6.0.0"
+  },
+  "name": "gridline",
+  "private": true,
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "simtest": "tsx src/simtest.ts",
+    "typecheck": "tsc --noEmit",
+    "smoke": "node --no-warnings --import tsx --loader ./css-loader.mjs src/browsersmoke.ts"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}
