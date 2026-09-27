@@ -1,5 +1,7 @@
-// Keyboard + gamepad input. Poll once per frame; edges are computed
+// Keyboard + gamepad + touch input. Poll once per frame; edges are computed
 // against the previous poll.
+
+import type { TouchState } from './touch';
 
 export interface InputState {
   throttle: number;
@@ -29,6 +31,11 @@ export class Input {
   private prev: InputState = { ...NEUTRAL };
   private padPrev = { aero: false, camera: false };
   private padIndex: number | null = null;
+  private touch: TouchState | null = null;
+  private prevTouch = { aero: false, camera: false, reset: false, pause: false };
+
+  /** Attach on-screen touch controls (no-op when null). */
+  setTouch(t: TouchState | null) { this.touch = t; }
 
   attach() {
     window.addEventListener('keydown', this.onKeyDown);
@@ -108,6 +115,25 @@ export class Input {
     this.prevAero = aero; this.prevCam = cam; this.prevReset = reset;
     this.prevPause = pause; this.prevMute = mute; this.prevQ = qUp; this.prevE = eDown;
     this.prevKeyCount = k.size;
+
+    // touch controls (OR-merged like gamepad)
+    const t = this.touch;
+    if (t) {
+      if (s.steer === 0) s.steer = (t.right ? 1 : 0) - (t.left ? 1 : 0);
+      if (t.throttle) s.throttle = 1;
+      if (t.brake) s.brake = 1;
+      s.boost = s.boost || t.boost;
+      s.aeroPressed = s.aeroPressed || this.edge(t.aero, this.prevTouch.aero);
+      s.cameraPressed = s.cameraPressed || this.edge(t.camera, this.prevTouch.camera);
+      s.resetPressed = s.resetPressed || this.edge(t.reset, this.prevTouch.reset);
+      s.pausePressed = s.pausePressed || this.edge(t.pause, this.prevTouch.pause);
+      s.anyPressed = s.anyPressed ||
+        t.left || t.right || t.throttle || t.brake || t.boost ||
+        t.aero || t.camera || t.reset || t.pause;
+      this.prevTouch.aero = t.aero; this.prevTouch.camera = t.camera;
+      this.prevTouch.reset = t.reset; this.prevTouch.pause = t.pause;
+    }
+
     this.prev = s;
     return s;
   }

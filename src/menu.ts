@@ -3,6 +3,7 @@
 
 import { LIVERIES, TyreCompound, Difficulty, GraphicsQuality } from './config';
 import { fmtTime } from './hud';
+import { TouchControls } from './touch';
 
 export interface SetupSelection {
   liveryIndex: number;
@@ -61,7 +62,7 @@ export class Menu {
       <p class="subtitle">ORIGINAL 3D OPEN-WHEEL RACING &nbsp;•&nbsp; COSTA VERDE</p>
       <button class="btn primary" id="b-quick">QUICK RACE — 5 LAPS</button>
       <button class="btn" id="b-tt">TIME TRIAL</button>
-      <p class="note">8 fictional teams • active aero • battery boost • overtake mode<br>Keyboard + gamepad supported</p>
+      <p class="note">8 fictional teams • active aero • battery boost • overtake mode<br>Keyboard + gamepad + touch supported</p>
     `);
     d.querySelector('#b-quick')!.addEventListener('click', () => { this.sel.mode = 'quick'; this.showSetup(); });
     d.querySelector('#b-tt')!.addEventListener('click', () => { this.sel.mode = 'timetrial'; this.showSetup(); });
@@ -130,6 +131,8 @@ export class Menu {
       </table>
       <p class="note">SM = straight-mode aero zones (cyan marks). DET board before the main straight:<br>
       stay within 1.0 s of the car ahead there to arm OVERTAKE for the next lap.</p>
+      ${TouchControls.isTouchDevice() ? `<p class="note" style="color:#00e5ff">Touch controls: ◀ ▶ steer • GAS / BRAKE pedals • hold BOOST<br>
+      AERO toggles active aero • CAM camera • RST reset (time trial) • ❚❚ pause</p>` : ''}
       <div style="text-align:center"><button class="btn primary" id="b-ctrl-go">GOT IT — RACE</button></div>
     </div>`);
     d.querySelector('#b-ctrl-go')!.addEventListener('click', () => this.controlsDone());

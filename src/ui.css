@@ -26,6 +26,25 @@
 #hud-lights .l.on { background: #ff2020; box-shadow: 0 0 18px #ff2020; }
 #minimap { position: absolute; top: 12px; right: 12px; width: 150px; height: 150px; background: rgba(8, 12, 18, 0.55); border-radius: 8px; border: 1px solid rgba(0,229,255,0.25); }
 
+/* ---------- touch controls (phones/tablets) ---------- */
+#touch { position: absolute; inset: 0; pointer-events: none; touch-action: none; z-index: 5; }
+#touch .tbtn { pointer-events: auto; position: absolute; display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: #fff; background: rgba(10, 20, 30, 0.45); border: 2px solid rgba(0, 229, 255, 0.55);
+  border-radius: 16px; touch-action: none; -webkit-tap-highlight-color: transparent; font-size: 15px; }
+#touch .tbtn.on { background: rgba(0, 229, 255, 0.5); }
+#touch-steer .tbtn { width: 74px; height: 74px; font-size: 30px; border-radius: 50%; }
+#t-left { left: 10px; bottom: 150px; }
+#t-right { left: 92px; bottom: 150px; }
+#touch-pedals .tbtn { width: 86px; height: 112px; }
+#t-brake { right: 104px; bottom: 130px; border-color: rgba(255, 90, 90, 0.6); }
+#t-brake.on { background: rgba(255, 90, 90, 0.5); }
+#t-gas { right: 10px; bottom: 130px; border-color: rgba(55, 224, 107, 0.6); }
+#t-gas.on { background: rgba(55, 224, 107, 0.5); }
+#t-boost { right: 10px; bottom: 252px; width: 86px; height: 62px; border-color: rgba(247, 181, 0, 0.65); }
+#t-boost.on { background: rgba(247, 181, 0, 0.5); }
+#touch-util { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; pointer-events: none; }
+#touch-util .tbtn { position: static; width: 58px; height: 42px; border-radius: 10px; font-size: 12px; }
+
 /* ---------- menus ---------- */
 .screen.dim { background: rgba(4, 8, 14, 0.78); }
 .title { font-size: 64px; font-weight: 900; letter-spacing: 6px; color: #fff; text-shadow: 0 0 30px rgba(0,229,255,0.5); margin: 0; }
@@ -60,4 +79,12 @@ table.res th { color: #9fb3c8; font-size: 12px; text-transform: uppercase; lette
   #cargrid { grid-template-columns: repeat(2, 1fr); }
   #hud-speed .spd { font-size: 30px; }
   #minimap { width: 110px; height: 110px; }
+  #touch-steer .tbtn { width: 64px; height: 64px; font-size: 26px; }
+  #t-left { left: 8px; bottom: 140px; }
+  #t-right { left: 80px; bottom: 140px; }
+  #touch-pedals .tbtn { width: 74px; height: 100px; font-size: 13px; }
+  #t-brake { right: 90px; bottom: 120px; }
+  #t-gas { right: 8px; bottom: 120px; }
+  #t-boost { right: 8px; bottom: 230px; width: 74px; height: 56px; font-size: 13px; }
+  #touch-util .tbtn { width: 52px; height: 38px; font-size: 11px; }
 }

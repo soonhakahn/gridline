@@ -3,6 +3,7 @@
 
 import { TrackData } from './track';
 import { Vehicle } from './vehicle';
+import { TouchControls } from './touch';
 
 export interface HudData {
   pos: number; total: number;
@@ -32,6 +33,8 @@ export class Hud {
   private mapCv: HTMLCanvasElement;
   private mapCtx: CanvasRenderingContext2D;
   private lastUpdate = 0;
+  /** On-screen touch controls (inactive shell on non-touch devices). */
+  readonly touch: TouchControls;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -66,6 +69,7 @@ export class Hud {
     }
     this.mapCv = div.querySelector('#minimap') as HTMLCanvasElement;
     this.mapCtx = this.mapCv.getContext('2d')!;
+    this.touch = new TouchControls(div);
     div.style.display = 'none';
     this.el.hud = div;
   }

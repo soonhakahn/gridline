@@ -69,6 +69,7 @@ class Game {
     this.smoke = new SmokeSystem(this.scene, 'high');
 
     this.input.attach();
+    this.input.setTouch(this.hud.touch.active ? this.hud.touch.state : null);
     addEventListener('resize', () => {
       this.renderer.setSize(innerWidth, innerHeight);
       this.cameras.onResize(innerWidth / innerHeight);

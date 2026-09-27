@@ -13,7 +13,7 @@ import { JSDOM } from 'jsdom';
 // ---------------- jsdom environment ----------------
 const dom = new JSDOM(
   '<!DOCTYPE html><html><head></head><body><div id="app"></div><div id="ui"></div></body></html>',
-  { pretendToBeVisual: true, url: 'http://localhost/' }
+  { pretendToBeVisual: true, url: 'http://localhost/?touch=1' } // force touch controls on
 );
 const win = dom.window as unknown as Record<string, unknown>;
 const g = globalThis as unknown as Record<string, unknown>;
@@ -124,6 +124,14 @@ function key(code: string, down: boolean): void {
     new (win['KeyboardEvent'] as typeof KeyboardEvent)(down ? 'keydown' : 'keyup', { code, bubbles: true })
   );
 }
+// touch buttons: jsdom has no TouchEvent, but TouchControls also binds mouse
+// events (desktop testing path), which is what we drive here.
+function tdown(s: string): void {
+  q(s).dispatchEvent(new (win['MouseEvent'] as typeof MouseEvent)('mousedown', { bubbles: true }));
+}
+function tup(s: string): void {
+  q(s).dispatchEvent(new (win['MouseEvent'] as typeof MouseEvent)('mouseup', { bubbles: true }));
+}
 function frames(n: number, stepMs = 16.7): void {
   for (let i = 0; i < n; i++) {
     const cbs = rafQ.splice(0, rafQ.length);
@@ -144,49 +152,50 @@ click('#b-ctrl-go');
 console.log('== quick race start ==');
 frames(30);
 ok((q('#hud') as HTMLElement).style.display !== 'none', 'HUD shown after race start');
+ok(doc.querySelector('#touch') != null, 'touch controls built with ?touch=1');
 ok(visible('#hud-lights'), 'start lights visible');
 // run through the lights sequence (~1s per light + random hold)
 frames(60 * 9);
 const msgAfterLights = (q('#hud-msg').textContent || '');
 console.log('  info: msg after lights =', JSON.stringify(msgAfterLights));
 
-console.log('== driving ==');
-key('ArrowUp', true);
+console.log('== driving (touch) ==');
+tdown('#t-gas'); tdown('#t-boost');
 frames(60 * 6);
-key('ArrowUp', false);
+tup('#t-gas'); tup('#t-boost');
 const v = spd();
-console.log('  info: speed after 6s full throttle =', v, 'km/h');
-ok(v > 100, `car accelerates (speed ${v} km/h)`);
+console.log('  info: speed after 6s touch GAS+BOOST =', v, 'km/h');
+ok(v > 100, `car accelerates on touch throttle (speed ${v} km/h)`);
 ok((q('#h-lap').textContent || '').startsWith('LAP 1/5'), 'lap counter shows LAP 1/5');
 ok((q('#h-gear').textContent || '').startsWith('GEAR'), 'gear readout present');
 const bat = parseInt((q('#h-batpct').textContent || '100').trim(), 10);
 ok(bat < 100, `battery deploys under throttle+boost drain (${bat}%)`);
 
-// camera cycle + aero toggle keys: just must not throw
-key('KeyC', true); frames(3); key('KeyC', false);
-key('ShiftLeft', true); frames(3); key('ShiftLeft', false);
+// touch command buttons: must not throw
+tdown('#t-cam'); frames(3); tup('#t-cam');
+tdown('#t-aero'); frames(3); tup('#t-aero');
 frames(10);
 
-console.log('== pause / resume ==');
-key('Escape', true); frames(3); key('Escape', false);
-ok(visible('#m-pause'), 'pause menu opens on Escape');
+console.log('== pause / resume (touch) ==');
+tdown('#t-pause'); frames(3); tup('#t-pause');
+ok(visible('#m-pause'), 'pause menu opens on touch pause button');
 click('#b-resume');
 ok(!visible('#m-pause'), 'resume hides pause menu');
 frames(10);
 
-console.log('== time trial reset ==');
+console.log('== time trial reset (touch) ==');
 key('Escape', true); frames(3); key('Escape', false);
 click('#b-quit');
 ok(visible('#m-main'), 'quit returns to main menu');
 click('#b-tt');
 click('#b-setup-go'); // controls already seen -> straight into race
 frames(60 * 6); // lights + go
-key('ArrowUp', true); frames(60 * 3); key('ArrowUp', false);
+tdown('#t-gas'); frames(60 * 3); tup('#t-gas');
 const v2 = spd();
-ok(v2 > 60, `time trial car drives (speed ${v2} km/h)`);
-key('KeyR', true); frames(3); key('KeyR', false);
+ok(v2 > 60, `time trial car drives on touch (speed ${v2} km/h)`);
+tdown('#t-rst'); frames(3); tup('#t-rst');
 frames(5);
-ok(true, 'R reset did not throw');
+ok(true, 'touch RST reset did not throw');
 
 console.log('== false start ==');
 key('Escape', true); frames(3); key('Escape', false);
