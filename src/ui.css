@@ -1,0 +1,63 @@
+/* GRIDLINE UI — HUD + menus */
+#ui { position: fixed; inset: 0; pointer-events: none; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #fff; user-select: none; -webkit-user-select: none; }
+#ui .screen { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: auto; }
+.hidden { display: none !important; }
+
+/* ---------- HUD ---------- */
+#hud { position: absolute; inset: 0; pointer-events: none; }
+#hud .panel { background: rgba(8, 12, 18, 0.62); border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 8px; padding: 8px 12px; backdrop-filter: blur(3px); }
+#hud-tl { position: absolute; top: 12px; left: 12px; font-size: 15px; line-height: 1.5; min-width: 150px; }
+#hud-tl .pos { font-size: 26px; font-weight: 800; color: #00e5ff; }
+#hud-delta { font-weight: 700; }
+#hud-delta.neg { color: #37e06b; } #hud-delta.pos { color: #ff5a5a; }
+#hud-speed { position: absolute; right: 12px; bottom: 12px; text-align: right; }
+#hud-speed .spd { font-size: 40px; font-weight: 800; }
+#hud-speed .gear { font-size: 18px; color: #ffd34d; font-weight: 700; }
+#hud-bl { position: absolute; left: 12px; bottom: 12px; font-size: 14px; line-height: 1.7; min-width: 170px; }
+#batbar { width: 150px; height: 12px; background: #222; border-radius: 6px; overflow: hidden; margin-top: 4px; border: 1px solid #555; }
+#batfill { height: 100%; width: 100%; background: linear-gradient(90deg, #00e5ff, #37e06b); transition: width 0.15s; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 13px; margin-right: 6px; }
+.badge.cm { background: #2456a8; } .badge.sm { background: #00b3cc; color: #04222a; }
+.badge.ot { background: #f7b500; color: #201500; }
+.badge.tyre-soft { background: #c8102e; } .badge.tyre-medium { background: #d8b400; color: #201a00; } .badge.tyre-hard { background: #e8e8e8; color: #222; }
+#hud-msg { position: absolute; top: 18%; width: 100%; text-align: center; font-size: 30px; font-weight: 800; text-shadow: 0 2px 12px #000; }
+#hud-lights { position: absolute; top: 26%; width: 100%; display: flex; justify-content: center; gap: 14px; }
+#hud-lights .l { width: 34px; height: 34px; border-radius: 50%; background: #2a1215; border: 2px solid #551; }
+#hud-lights .l.on { background: #ff2020; box-shadow: 0 0 18px #ff2020; }
+#minimap { position: absolute; top: 12px; right: 12px; width: 150px; height: 150px; background: rgba(8, 12, 18, 0.55); border-radius: 8px; border: 1px solid rgba(0,229,255,0.25); }
+
+/* ---------- menus ---------- */
+.screen.dim { background: rgba(4, 8, 14, 0.78); }
+.title { font-size: 64px; font-weight: 900; letter-spacing: 6px; color: #fff; text-shadow: 0 0 30px rgba(0,229,255,0.5); margin: 0; }
+.subtitle { color: #9fb3c8; letter-spacing: 3px; margin: 6px 0 30px; font-size: 15px; }
+.btn { pointer-events: auto; cursor: pointer; background: #10202c; color: #fff; border: 1px solid #00e5ff; border-radius: 8px; padding: 12px 34px; font-size: 18px; font-weight: 700; margin: 6px; min-width: 240px; text-align: center; }
+.btn:hover { background: #00e5ff; color: #04222a; }
+.btn.primary { background: #00e5ff; color: #04222a; }
+.btn.primary:hover { background: #5ff0ff; }
+.btn.small { min-width: 0; padding: 8px 18px; font-size: 15px; }
+.btnrow { display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; }
+.card { background: rgba(10, 16, 24, 0.92); border: 1px solid rgba(0,229,255,0.3); border-radius: 12px; padding: 22px 28px; max-width: 860px; width: min(92vw, 860px); max-height: 88vh; overflow-y: auto; }
+.card h2 { margin: 0 0 4px; font-size: 24px; }
+.card h3 { margin: 16px 0 8px; font-size: 15px; color: #9fb3c8; text-transform: uppercase; letter-spacing: 2px; }
+.opt { cursor: pointer; border: 2px solid #2a3a4a; border-radius: 8px; padding: 8px 14px; margin: 4px; font-weight: 700; background: #0c141d; }
+.opt.sel { border-color: #00e5ff; background: #12303c; color: #fff; }
+#cargrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.carc { cursor: pointer; border: 2px solid #2a3a4a; border-radius: 8px; padding: 8px 4px; text-align: center; background: #0c141d; }
+.carc.sel { border-color: #00e5ff; }
+.carc .sw { height: 34px; border-radius: 5px; margin-bottom: 6px; position: relative; }
+.carc .num { position: absolute; right: 6px; top: 2px; font-weight: 900; font-size: 20px; color: rgba(255,255,255,0.92); text-shadow: 0 1px 3px #000; }
+.carc .nm { font-size: 11px; color: #cfe0f0; }
+table.ctrl { border-collapse: collapse; margin: 8px auto; font-size: 15px; }
+table.ctrl td { border: 1px solid #2a3a4a; padding: 7px 14px; }
+table.ctrl td.k { background: #12303c; font-weight: 800; color: #00e5ff; white-space: nowrap; }
+table.res { border-collapse: collapse; margin: 10px auto; font-size: 15px; min-width: min(80vw, 480px); }
+table.res td, table.res th { border-bottom: 1px solid #22303e; padding: 7px 12px; text-align: left; }
+table.res tr.me td { color: #00e5ff; font-weight: 800; }
+table.res th { color: #9fb3c8; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.note { color: #8fa3b8; font-size: 13px; margin-top: 14px; text-align: center; }
+@media (max-width: 640px) {
+  .title { font-size: 40px; }
+  #cargrid { grid-template-columns: repeat(2, 1fr); }
+  #hud-speed .spd { font-size: 30px; }
+  #minimap { width: 110px; height: 110px; }
+}
