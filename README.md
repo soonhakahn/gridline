@@ -35,9 +35,25 @@ npm run smoke    # jsdom browser smoke test (menus, lights, driving, pause, fals
 | Pause | Esc | Menu |
 | Mute | M | — |
 
-Manual gears: **Q** (down) / **E** (up) when manual shifting is enabled in the
-menu. (The original spec used `A` for downshift, but it collides with the aero
-toggle key, so it was moved to `Q`.)
+Manual gears: **Q** (up) / **E** (down). (The original spec used `A` for
+downshift, but `A` steers, so it was moved to `E`.)
+
+### Touch controls (phones/tablets)
+
+On touch devices the game shows on-screen controls automatically — no
+keyboard needed:
+
+| Action | Touch |
+|---|---|
+| Steer | ◀ ▶ buttons (bottom-left) |
+| Throttle / brake | GAS / BRAKE pedals (bottom-right) |
+| Boost | BOOST button (hold) |
+| Active aero toggle | AERO |
+| Camera | CAM |
+| Reset to track (Time Trial) | RST |
+| Pause | ❚❚ |
+
+Multi-touch is supported, so you can steer and hold GAS at the same time.
 
 ## Simplifications vs. real simulation
 
